@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Negocios2015" Class="Negocios2015DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=Negocios2015;Integrated Security=True" SettingsObjectName="APP_LINQ1.My.MySettings" SettingsPropertyName="Negocios2015ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="Ventas.clientes" Member="clientes">
+    <Type Name="clientes">
+      <Column Name="IdCliente" Type="System.String" DbType="VarChar(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NomCliente" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="DirCliente" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="idpais" Type="System.String" DbType="Char(3)" CanBeNull="true" />
+      <Column Name="fonoCliente" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="Activo" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="clientes_pedidoscabe" Member="pedidoscabe" ThisKey="IdCliente" OtherKey="IdCliente" Type="pedidoscabe" />
+    </Type>
+  </Table>
+  <Table Name="Ventas.pedidoscabe" Member="pedidoscabe">
+    <Type Name="pedidoscabe">
+      <Column Name="IdPedido" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdCliente" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaPedido" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FechaEntrega" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaEnvio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EnvioPedido" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
+      <Column Name="CantidaPedido" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Destinatario" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="DirDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="CiuDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="RefDestnatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="DepDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="PaiDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Association Name="pedidoscabe_pedidosdeta" Member="pedidosdeta" ThisKey="IdPedido" OtherKey="IdPedido" Type="pedidosdeta" />
+      <Association Name="clientes_pedidoscabe" Member="clientes" ThisKey="IdCliente" OtherKey="IdCliente" Type="clientes" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Ventas.pedidosdeta" Member="pedidosdeta">
+    <Type Name="pedidosdeta">
+      <Column Name="IdPedido" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdProducto" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PrecioUnidad" Type="System.Decimal" DbType="Decimal(10,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Cantidad" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Descuento" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="pedidoscabe_pedidosdeta" Member="pedidoscabe" ThisKey="IdPedido" OtherKey="IdPedido" Type="pedidoscabe" IsForeignKey="true" />
+      <Association Name="productos_pedidosdeta" Member="productos" ThisKey="IdProducto" OtherKey="IdProducto" Type="productos" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Compras.productos" Member="productos">
+    <Type Name="productos">
+      <Column Name="IdProducto" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NomProducto" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="IdProveedor" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdCategoria" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CantxUnidad" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="PrecioUnidad" Type="System.Decimal" DbType="Decimal(10,0) NOT NULL" CanBeNull="false" />
+      <Column Name="UnidadesEnExistencia" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="UnidadesEnPedido" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="productos_pedidosdeta" Member="pedidosdeta" ThisKey="IdProducto" OtherKey="IdProducto" Type="pedidosdeta" />
+    </Type>
+  </Table>
+  <Function Name="dbo.usp_PedidosCliente_LINQ" Method="usp_PedidosCliente_LINQ">
+    <Parameter Name="IdCliente" Parameter="idCliente" Type="System.String" DbType="VarChar(5)" />
+    <ElementType Name="usp_PedidosCliente_LINQResult">
+      <Column Name="IdPedido" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdCliente" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaPedido" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FechaEntrega" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaEnvio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EnvioPedido" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
+      <Column Name="CantidaPedido" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Destinatario" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="DirDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="CiuDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="RefDestnatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="DepDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="PaiDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_PedidosAño_LINQ" Method="usp_PedidosAño_LINQ">
+    <Parameter Name="Año" Parameter="año" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_PedidosAño_LINQResult">
+      <Column Name="IdPedido" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdCliente" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaPedido" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FechaEntrega" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FechaEnvio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EnvioPedido" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
+      <Column Name="CantidaPedido" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Destinatario" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="DirDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="CiuDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="RefDestnatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="DepDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="PaiDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_PedidosFecha_LINQ" Method="usp_PedidosFecha_LINQ">
+    <Parameter Name="fec1" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="fec2" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="usp_PedidosFecha_LINQResult">
+      <Column Name="IdPedido" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FechaPedido" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Destinatario" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="DirDestinatario" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>
