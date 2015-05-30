@@ -87,7 +87,25 @@
     End Sub
 
     Private Sub btnActualizar_Click(sender As Object, e As EventArgs) Handles btnActualizar.Click
+        Dim cliente = From cli In modelo.clientes Where cli.IdCliente = txtCodigo.Text
 
+        Dim objCliente As New clientes
+        objCliente = cliente.First
+        objCliente.IdCliente = txtCodigo.Text
+        objCliente.NomCliente = txtCliente.Text
+        objCliente.DirCliente = txtDireccion.Text
+        objCliente.idpais = cboPais.SelectedValue.ToString
+        objCliente.fonoCliente = txtTelefono.Text
+        objCliente.Activo = True
+
+        Try
+            modelo.SubmitChanges()
+            dgClientes.DataSource = modelo.usp_ClienteListado
+            dgClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnMode.AllCells
+            MessageBox.Show("Cliente actualizado", "AVISO")
+        Catch ex As Exception
+            MessageBox.Show("Error en la transacción, verificar", "AVISO")
+        End Try
     End Sub
 
     Private Sub btnBaja_Click(sender As Object, e As EventArgs) Handles btnBaja.Click
